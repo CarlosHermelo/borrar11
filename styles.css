@@ -162,6 +162,25 @@ input[type="number"]::placeholder {
     color: white;
 }
 
+.btn-tutorial {
+    background-color: #fffde7;
+    color: #fbc02d;
+    border: 2px solid #fbc02d;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-tutorial:hover {
+    background-color: #fbc02d;
+    color: white;
+}
+
 .results-wrapper {
     display: flex;
     gap: 2rem;
@@ -252,7 +271,7 @@ tbody tr:hover {
     border: 2px solid #fbc02d;
     padding: 12px 16px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     z-index: 1000;
     max-width: 250px;
     font-size: 0.95rem;

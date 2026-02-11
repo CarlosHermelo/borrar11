@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Solo se ejecuta una vez
-    if (localStorage.getItem('pamiTourCompleted')) return;
-
     const steps = [
         { id: 'nombre', message: 'Ingresá tu nombre tal como figura en tu DNI.' },
         { id: 'apellido', message: 'Ingresá tu apellido completo.' },
@@ -15,17 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnContinuar = document.querySelector('.btn-continuar');
     if (btnContinuar) btnContinuar.id = 'btn-continuar';
 
-    const overlay = document.createElement('div');
-    overlay.className = 'tour-overlay';
-    document.body.appendChild(overlay);
-
-    const popup = document.createElement('div');
-    popup.className = 'tour-popup';
-    document.body.appendChild(popup);
-
+    let overlay, popup;
     let currentStep = 0;
+    let tourActive = false;
+
+    function createTourElements() {
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'tour-overlay';
+            document.body.appendChild(overlay);
+        }
+        if (!popup) {
+            popup = document.createElement('div');
+            popup.className = 'tour-popup';
+            document.body.appendChild(popup);
+        }
+    }
 
     function showStep(index) {
+        if (!tourActive) return;
+
         if (index >= steps.length) {
             finishTour();
             return;
@@ -46,9 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         setTimeout(() => {
+            if (!tourActive) return;
             const rect = target.getBoundingClientRect();
             const scrollY = window.scrollY;
-            
+
             // Posicionar arriba del campo
             popup.style.left = `${rect.left}px`;
             popup.style.top = `${rect.top + scrollY - popup.offsetHeight - 20}px`;
@@ -61,27 +68,47 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             currentStep++;
-            
+
             // Tiempo que dura cada mensaje
             setTimeout(() => {
+                if (!tourActive) return;
                 popup.classList.remove('active');
                 setTimeout(() => showStep(currentStep), 300);
             }, 3000);
         }, 600);
     }
 
+    function startTour() {
+        if (tourActive) return;
+        tourActive = true;
+        currentStep = 0;
+        createTourElements();
+        overlay.classList.add('visible');
+        showStep(0);
+    }
+
     function finishTour() {
-        overlay.classList.remove('visible');
+        tourActive = false;
+        if (overlay) overlay.classList.remove('visible');
+        if (popup) popup.classList.remove('active');
+
         setTimeout(() => {
-            overlay.remove();
-            popup.remove();
+            if (overlay) overlay.remove();
+            if (popup) popup.remove();
+            overlay = null;
+            popup = null;
             localStorage.setItem('pamiTourCompleted', 'true');
         }, 500);
     }
 
-    // Iniciar con un pequeño delay
-    setTimeout(() => {
-        overlay.classList.add('visible');
-        showStep(0);
-    }, 1000);
+    // Botón para repetir el tutorial
+    const btnTutorial = document.getElementById('btn-tutorial');
+    if (btnTutorial) {
+        btnTutorial.addEventListener('click', startTour);
+    }
+
+    // Auto-ejecución solo la primera vez
+    if (!localStorage.getItem('pamiTourCompleted')) {
+        setTimeout(startTour, 1000);
+    }
 });
