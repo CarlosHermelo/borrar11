@@ -163,22 +163,26 @@ input[type="number"]::placeholder {
 }
 
 .btn-tutorial {
-    background-color: #fffde7;
-    color: #fbc02d;
-    border: 2px solid #fbc02d;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
+    background-color: #ffc107;
+    /* Mockup yellow */
+    color: #124a94;
+    /* PAMI Blue */
+    border: 2px solid #124a94;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 700;
     cursor: pointer;
-    margin-bottom: 1rem;
-    font-size: 0.8rem;
+    margin: 0 auto 1.5rem auto;
+    display: table;
+    /* To center with margin auto even if it's block-like */
+    font-size: 0.9rem;
     text-transform: uppercase;
     transition: all 0.3s ease;
 }
 
 .btn-tutorial:hover {
-    background-color: #fbc02d;
-    color: white;
+    background-color: #ffca28;
+    transform: scale(1.05);
 }
 
 .results-wrapper {
